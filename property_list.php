@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php include "db_connect.php" ?>
+<?php $selectedCity = $_GET['city']; 
+
+?>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Best PG's in Mumbai | PG Life</title>
+    <title>Best PG's in   <?php echo $selectedCity;?> | PG Life</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" rel="stylesheet" />
@@ -26,10 +29,7 @@
 ">Home</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-            <?php 
-                    $selectedCity = $_GET['city'];
-                    echo $selectedCity;
-            ?>
+            <?php echo $selectedCity;?>
             </li>
         </ol>
     </nav>
@@ -73,7 +73,7 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star-half-alt"></i>
                     </div>
-                    <div class="interested-container">
+                    <div class="interested-container" >
                         <i class="far fa-heart"></i>
                         <div class="interested-text">3 interested</div>
                     </div>
@@ -99,7 +99,7 @@
                         <div class="rent-unit">per month</div>
                     </div>
                     <div class="button-container col-6">
-                        <a href="property_detail.php
+                        <a href="property_detail.php?city=<?php echo $selectedCity ?>&propertyid=<?php echo $row['ID'];?>
         " class="btn btn-primary">View</a>
                     </div>
                 </div>

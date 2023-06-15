@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php include "db_connect.php" ?>
+<?php $selectedCity = $_GET['city']; 
+        $propertyId = $_GET['propertyid'];
+        $propertyDetails = $conn->query("SELECT * FROM PROPERTIES WHERE ID = '$propertyId';");
+        while($row = mysqli_fetch_assoc($propertyDetails)):
+?>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ganpati Paying Guest | PG Life</title>
+    <title> <?php echo $row['NAME'];  ?> | PG Life</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" rel="stylesheet" />
@@ -11,7 +16,7 @@
         href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap"
         rel="stylesheet" />
     <link href="css/common.css" rel="stylesheet" />
-    <link href="css/property_detail.css" rel="stylesheet" />
+    <link href="css/property_details.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -24,11 +29,12 @@
                 <a href="index.php">Home</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="property_list.php">
+                <a href="./property_list.php?city=<?php echo $selectedCity?>">
+                <?php echo $selectedCity; ?>
                 </a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Ganpati Paying Guest
+            <?php echo $row['NAME'];  ?>
             </li>
         </ol>
     </nav>
@@ -69,28 +75,39 @@
                 <i class="fas fa-star"></i>
                 <i class="fas fa-star"></i>
             </div>
+        
             <div class="interested-container">
+            <button href="#" data-toggle="modal" data-target="#login-modal">
                 <i class="is-interested-image far fa-heart"></i>
                 <div class="interested-text">
                     <span class="interested-user-count">6</span> interested
                 </div>
+                </button>
             </div>
+    
         </div>
         <div class="detail-container">
-            <div class="property-name">Ganpati Paying Guest</div>
-            <div class="property-address">Police Beat, Sainath Complex, Besides, SV Rd, Daulat Nagar, Borivali East,
-                Mumbai - 400066</div>
+            <div class="property-name"> <?php echo $row['NAME'];  ?></div>
+            <div class="property-address"> <?php echo $row['ADDRESS']; ?></div>
             <div class="property-gender">
-                <img src="img/unisex.png" />
+            <?php
+                        if($row['GENDER'] == 'female'){
+                            echo ' <img src="./img/male.png" />';
+                        } elseif($row['GENDER'] == 'male'){
+                            echo ' <img src="./img/female.png" />';
+                        } else{
+                            echo '<img src="./img/male.png" />|<img src="./img/female.png" />';
+                        }
+                        ?>
             </div>
         </div>
         <div class="row no-gutters">
             <div class="rent-container col-6">
-                <div class="rent">Rs 8,500/-</div>
+                <div class="rent">Rs. <?php echo $row['RENT']; ?> /-</div>
                 <div class="rent-unit">per month</div>
             </div>
             <div class="button-container col-6">
-                <a href="#" class="btn btn-primary">Book Now</a>
+                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#login-modal">Book Now</a>
             </div>
         </div>
     </div>
@@ -160,13 +177,7 @@
 
     <div class="property-about page-container">
         <h1>About the Property</h1>
-        <p>Furnished studio apartment - share it with close friends! Located in posh area of Bijwasan in Delhi, this
-            house is available for both boys and girls. Go for a private room or opt for a shared one and make it your
-            own abode. Go out with your new friends - catch a movie at the nearest cinema hall or just chill in a cafe
-            which is not even 2 kms away. Unwind with your flatmates after a long day at work/college. With a common
-            living area and a shared kitchen, make your own FRIENDS moments. After all, there's always a Joey with
-            unlimited supply of food. Remember, all it needs is one crazy story to convert a roomie into a BFF. What's
-            nearby/Your New Neighborhood 4.0 Kms from Dwarka Sector- 21 Metro Station.</p>
+        <p>  <?php echo $row['description']; ?></p>
     </div>
 
     <div class="property-rating">
@@ -232,6 +243,7 @@
             </div>
         </div>
     </div>
+    <?php endwhile; ?>
 
     <div class="property-testimonials page-container">
         <h1>What people say</h1>
