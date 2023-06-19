@@ -64,7 +64,10 @@
     font-size: 20px;
     cursor: pointer;
 }
-
+.interested-container button{
+    background-color: inherit;
+    border: none;
+}
 .interested-text {
     font-size: 10px;
 }
