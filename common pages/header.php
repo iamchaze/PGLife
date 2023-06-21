@@ -1,4 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<?php include "./db_connect.php" ?>
 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap"
+        rel="stylesheet" />
+    <link href="./css/common_.css" type="text/css" rel="stylesheet" />
+
+    <link href="./css/index.css" type="text/css" rel="stylesheet" />
+</head>
+
+<!-- -------------------------------------------------------------Header Content(Not Logged In)------------------------------------------ -->
+<?php session_start(); ?>
 <div class="header sticky-top">
     <nav class="navbar navbar-expand-md navbar-light">
         <a class="navbar-brand" href="./index.php">
@@ -10,57 +30,51 @@
 
         <div class="collapse navbar-collapse justify-content-end" id="my-navbar">
             <ul class="navbar-nav">
-                <li class="nav-item">
+                <?php
+                if (isset($_SESSION['user_id'])) {
+                    echo '<li class="nav-item">
+                    <a id="dashboard-btn" class="nav-link text-info" href="../../PGLife/dashboard.php"">
+                        <i class="fas fa-user"></i><b>Hi, ' . $_SESSION['username'] . '</b>
+                    </a>
+                </li>';
+                } else {
+                    echo '<li class="nav-item">
                     <a class="nav-link" href="#" data-toggle="modal" data-target="#signup-modal">
                         <i class="fas fa-user"></i>Signup
                     </a>
-                </li>
+                </li>';
+                }
+
+                ?>
                 <div class="nav-vl"></div>
-                <li class="nav-item">
+                <?php
+                if (isset($_SESSION['user_id'])) {
+                    echo '
+                    <li class="nav-item">
+                        <a id="logout-btn" class="nav-link text-danger" href="../../PGLife/common pages/logout.php">
+                            <i class="fas fa-sign-in-alt"></i>Logout
+                        </a>
+                    </li>';
+                } else {
+                    echo
+                        '<li class="nav-item">
                     <a class="nav-link" href="#" data-toggle="modal" data-target="#login-modal">
                         <i class="fas fa-sign-in-alt"></i>Login
                     </a>
-                </li>
+                </li>';
+                }
+                ?>
             </ul>
         </div>
     </nav>
 </div>
-<div class="modal fade" id="filter-modal" tabindex="-1" role="dialog" aria-labelledby="filter-heading"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="filter-heading">Filters</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
 
-            <div class="modal-body">
-                <h5>Gender</h5>
-                <hr />
-                <div>
-                    <button class="btn btn-outline-dark btn-active">
-                        No Filter
-                    </button>
-                    <button class="btn btn-outline-dark">
-                        <i class="fas fa-venus-mars"></i>Unisex
-                    </button>
-                    <button class="btn btn-outline-dark">
-                        <i class="fas fa-mars"></i>Male
-                    </button>
-                    <button class="btn btn-outline-dark">
-                        <i class="fas fa-venus"></i>Female
-                    </button>
-                </div>
-            </div>
 
-            <div class="modal-footer">
-                <button data-dismiss="modal" class="btn btn-success">Okay</button>
-            </div>
-        </div>
-    </div>
-</div>
+
+
+
+
+<!-- -------------------------------------------------------Signup Modal---------------------------------------------- -->
 
 <div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="signup-heading"
     aria-hidden="true">
@@ -73,7 +87,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="signup-form" class="form" role="form" method="POST" action="">
+                <form id="signup-form" class="form" role="form" method="POST"
+                    action="../../PGLife/common pages/signup_submit.php">
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">
@@ -138,26 +153,9 @@
                         <button type="submit" class="btn btn-block btn-primary">Create Account</button>
                     </div>
                 </form>
-                <?php
-                    $full_name = $_POST['full_name'];
-                    $phone = $_POST['phone'];
-                    $email = $_POST['email'];
-                    $password = $_POST['password'];
-                    $college_name = $_POST['college_name'];
-                    $gender = $_POST['gender'];
-
-                    $signupQuery = $conn->query("INSERT INTO USERS('EMAIL','PASSWORD','FULL_NAME','PHONE','GENDER','COLLEGE_NAME') VALUES('$email','$password','$full_name','$phone','$gender','$college_name';");
-                    if($signupQuery){
-                        echo "Success!";
-                    }
-            
-
-                ?>
             </div>
-
-
-
-
+            <div id="signup-result">
+            </div>
             <div class="modal-footer">
                 <span>Already have an account?
                     <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#login-modal">Login</a>
@@ -166,6 +164,8 @@
         </div>
     </div>
 </div>
+
+<!-- -----------------------------------------------Login Modal---------------------------------------------- -->
 
 <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-heading" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -178,7 +178,8 @@
             </div>
 
             <div class="modal-body">
-                <form id="login-form" class="form" role="form">
+                <form id="login-form" class="form" role="form" action="../../PGLife/common pages/login_submit.php"
+                    method="POST">
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">
@@ -203,7 +204,7 @@
                     </div>
                 </form>
             </div>
-
+            <div id="login-result"></div>
             <div class="modal-footer">
                 <span>
                     <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#signup-modal">Click here</a>
@@ -214,6 +215,73 @@
     </div>
 </div>
 
-<?php
+<!--         -----------------------------------------Loader------------------------------------------------------------       -->
+<div id="loading">
+</div>
 
-?>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#signup-form').submit(function (e) {
+            $('#loading').css({ 'display': 'block' })
+            e.preventDefault(); // Prevent the form from submitting normally
+
+            // Perform an AJAX request to the signup_submit.php file
+            $.ajax({
+                type: 'POST',
+                url: '../../PGLife/common pages/signup_submit.php',
+                data: $(this).serialize(),// Serialize the form data
+                success: function (response) {
+                    // Display the signup result in the signup-result container
+                    if (response == 'Sign up Complete!') {
+                        $('#signup-result').html(response).addClass('success').removeClass('failure');
+                    } else {
+                        $('#signup-result').html(response).addClass('failure').removeClass('success');
+                    }
+                },
+                error: function () {
+                    // Handle the AJAX request error
+                    $('#signup-result').html('<div class="alert alert-danger">Something went wrong.</div>');
+                }
+            });
+            $('#loading').css({ 'display': 'none' })
+        });
+
+        $('#login-form').submit(function (event) {
+            $('#loading').css({ 'display': 'block' })
+            event.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: '../../PGLife/common pages/login_submit.php',
+                data: $(this).serialize(),
+                success: function (response) {
+                    if (response == 'Login Successful!') {
+                        window.location.href = window.location.href;
+                    } else {
+                        $("#login-result").html(response).addClass('failure');
+                    }
+                },
+                error: function () {
+                    // Handle the AJAX request error
+                    $('#signup-result').html('<div class="alert alert-danger">Something went wrong.</div>');
+
+                }
+            })
+
+        });
+        $('#logout-btn').click(function (e) {
+            $('#loading').css({ 'display': 'block' })
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: '../../PGLife/common pages/logout.php',
+                data: null,
+                success: function (response) {
+                    window.location.href = '../../PGLife/index.php';
+                }
+            })
+        });
+    });
+</script>

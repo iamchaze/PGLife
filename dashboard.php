@@ -11,15 +11,16 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap"
         rel="stylesheet" />
-    <link href="css/common.css" rel="stylesheet" />
-    <link href="css/property_detail.css" rel="stylesheet" />
+    <link href="css/common_.css" rel="stylesheet" />
+    <link href="css/property_details.css" rel="stylesheet" />
     <link href="css/home.css" rel="stylesheet" />
     <link href="css/dashboard.css" rel="stylesheet" />
-    <link href="css/property_list.css" rel="stylesheet" />
+    <link href="css/property_list1.css" rel="stylesheet" />
 </head>
 
 <body>
     <?php include "./common pages/header.php" ?>
+    <?php include "./common pages/filter.php" ?>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb py-2">
             <li class="breadcrumb-item">

@@ -36,6 +36,10 @@
 
 .image-container {
     text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 @media (max-width: 768px) {
@@ -46,7 +50,8 @@
 
 .image-container img {
     width: 100%;
-    max-width: 300px;
+    max-width: 100%;
+
 }
 
 .star-container i {
@@ -108,9 +113,9 @@
 }
 
 .button-container .btn {
-    font-size: 14px;
+    font-size: .8em;
     border-radius: 0px;
-    width: 140px;
+    width: 50%;
     float: right;
 }
 
