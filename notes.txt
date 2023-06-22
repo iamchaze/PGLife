@@ -20,4 +20,13 @@
 
 
 
+
+<?php
+                        $likeCountQuery = $conn->query("SELECT * FROM interested_users_properties WHERE PROPERTY_ID = '$propertyId';");
+                        if($likeCountQuery){
+                            $interestedCount =  mysqli_num_rows($likeCountQuery);
+                        }
+                        echo '<span class="interested-user-count">' . $interestedCount . '</span> interested';
+                        ?>
+
                 

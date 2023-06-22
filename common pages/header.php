@@ -14,7 +14,7 @@
         rel="stylesheet" />
     <link href="./css/common_.css" type="text/css" rel="stylesheet" />
 
-    <link href="./css/index.css" type="text/css" rel="stylesheet" />
+    <link href="./css/home.css" type="text/css" rel="stylesheet" />
 </head>
 
 <!-- -------------------------------------------------------------Header Content(Not Logged In)------------------------------------------ -->

@@ -111,25 +111,25 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
 
                 <div class="interested-container">
                     <?php
-                    if (!isset($_SESSION['user_id'])){
-                        echo ' <i class="is-interested-image far fa-heart" id="interested-btn" data-toggle="modal" data-target="#login-modal"></i>';
+                    if (!isset($_SESSION["user_id"])) {
+                        echo '<i class="interested-image far fa-heart"  id="interested-btn" data-toggle="modal" data-target="#login-modal" ></i>';
                     } else {
-                        $like = $conn->query("SELECT COUNT(*) FROM interested_users_properties WHERE USER_ID = '$_SESSION[user_id]' AND PROPERTY_ID = $propertyId;");
-                        $isLiked = mysqli_fetch_assoc($like);
-                         if($isLiked['COUNT(*)'] > 0){
-                            echo ' <i class="is-interested-image fas fa-heart" id="dislike-btn" value="'.$propertyId.'"></i>';
-                         } else {
-                            echo ' <i class="is-interested-image far fa-heart" id="like-btn" value="'.$propertyId.'"></i>';
-                         }
+                        $user_id = $_SESSION["user_id"];
+                        $isLiked_result = $conn->query("SELECT * FROM interested_users_properties WHERE USER_ID = $user_id AND PROPERTY_ID = $propertyId");
+                        if (isset($_SESSION["user_id"]) && mysqli_num_rows($isLiked_result) == 1) {
+                            echo "<i class='is-interested-image fas fa-heart' propertyid = $propertyId ></i>";
+                        } else {
+                            echo "<i class='is-interested-image far fa-heart' propertyid = $propertyId ></i>";
+                        }
                     }
                     ?>
-   
-                      
                     <div class="interested-text">
                         <?php
-                        $interestedCountQuery = $conn->query("SELECT COUNT(*) FROM interested_users_properties WHERE PROPERTY_ID = '$propertyId';");
-                        $count = mysqli_fetch_assoc($interestedCountQuery);
-                        echo '<span class="interested-user-count">' . $count['COUNT(*)'] . '</span> interested';
+                        $likeCountQuery = $conn->query("SELECT * FROM interested_users_properties WHERE PROPERTY_ID = '$propertyId';");
+                        if ($likeCountQuery) {
+                            $interestedCount = mysqli_num_rows($likeCountQuery);
+                        }
+                        echo '<span class="interested-user-count">' . $interestedCount . '</span> interested';
                         ?>
                     </div>
                 </div>
@@ -342,15 +342,26 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script>
-            $(document).ready(function(){
-                $('#like-btn').click(function(e){
+            $(document).ready(function () {
+                $('.is-interested-image').click(function (e) {
                     e.preventDefault();
+                    likedata = {
+                        'propertyid': $('.is-interested-image').attr('propertyid')
+                    }
                     $.ajax({
                         type: 'POST',
-                        url: '../PGLife/common pages/like.php',
-                        data: $(this).serialize(),
-                        success: function(response){
-                            console.log($(this));
+                        url: '../PGLife/common pages/heart.php',
+                        data: likedata,
+                        success: function (response) {
+                            var is_interested_image = $(".is-interested-image");
+                            var interested_user_count = $(".interested-user-count");
+                            if (response == 'Liked') {
+                                is_interested_image.addClass("fas").removeClass("far");
+                                interested_user_count.html(parseFloat(interested_user_count.html()) + 1);
+                            } else {
+                                is_interested_image.addClass("far").removeClass("fas");
+                                interested_user_count.html(parseFloat(interested_user_count.html()) - 1);
+                            }
                         }
                     })
                 })

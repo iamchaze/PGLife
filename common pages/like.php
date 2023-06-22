@@ -12,5 +12,5 @@ $like = $conn->query("INSERT INTO INTERESTED_USERS_PROPERTIES(`USER_ID`, `PROPER
 if (!$like) {
     echo 'Error:' . mysqli_error($conn);
 }
-echo 'Liked';
+echo $property;
 ?>
