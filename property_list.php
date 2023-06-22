@@ -3,7 +3,6 @@
 <?php include "db_connect.php" ?>
 <?php include "./common pages/filter.php" ?>
 <?php $selectedCity = $_GET['city'];
-
 ?>
 
 <head>
@@ -77,7 +76,6 @@
 
                 <div class="content-container col-md-8">
                     <div class="row no-gutters justify-content-between">
-
                         <div class="star-container" title="4.5">
                             <?php
                             $avgRating = (floatval($row['RATING_CLEAN']) + floatval($row['RATING_FOOD']) + floatval($row['RATING_SAFETY'])) / 3;
@@ -85,7 +83,6 @@
                             if (strpos($avgRating, '.0') !== false) {
                                 for ($i = 1; $i <= intval($avgRating); $i++) {
                                     echo ' <i class="fas fa-star"></i> ';
-
                                 }
                                 for ($j = 1; $j <= 5 - intval($avgRating); $j++) {
                                     echo ' <i class="far fa-star"></i> ';
@@ -103,10 +100,18 @@
                             ?>
                         </div>
                         <div class="interested-container">
-                            <button href="#" data-toggle="modal" data-target="#login-modal">
-                                <i class="far fa-heart"></i>
-                                <div class="interested-text">3 interested</div>
-                            </button>
+                            <i class="far fa-heart" <?php if (isset($_SESSION['user_id'])) {
+                                echo '';
+                            } else {
+                                echo 'data-toggle="modal" data-target="#login-modal"';
+                            } ?>></i>
+                            
+                            <div class="interested-text">
+                            <?php
+                            $interestedCountQuery = $conn->query("SELECT COUNT(*) FROM interested_users_properties WHERE PROPERTY_ID = '$propertyId';");
+                            $count = mysqli_fetch_assoc($interestedCountQuery);
+                             echo $count['COUNT(*)'].' interested</div>';
+                             ?>
                         </div>
                     </div>
                     <div class="detail-container">

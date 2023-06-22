@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php include "db_connect.php" ?>
+<?php include "db_connect.php"; ?>
 <?php $selectedCity = $_GET['city'];
 $propertyId = $_GET['propertyid'];
 $propertyDetails = $conn->query("SELECT * FROM PROPERTIES WHERE ID = '$propertyId';");
@@ -110,14 +110,29 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
                 </div>
 
                 <div class="interested-container">
-                    <button href="#" data-toggle="modal" data-target="#login-modal">
-                        <i class="is-interested-image far fa-heart"></i>
-                        <div class="interested-text">
-                            <span class="interested-user-count">6</span> interested
-                        </div>
-                    </button>
+                    <?php
+                    if (!isset($_SESSION['user_id'])){
+                        echo ' <i class="is-interested-image far fa-heart" id="interested-btn" data-toggle="modal" data-target="#login-modal"></i>';
+                    } else {
+                        $like = $conn->query("SELECT COUNT(*) FROM interested_users_properties WHERE USER_ID = '$_SESSION[user_id]' AND PROPERTY_ID = $propertyId;");
+                        $isLiked = mysqli_fetch_assoc($like);
+                         if($isLiked['COUNT(*)'] > 0){
+                            echo ' <i class="is-interested-image fas fa-heart" id="dislike-btn" value="'.$propertyId.'"></i>';
+                         } else {
+                            echo ' <i class="is-interested-image far fa-heart" id="like-btn" value="'.$propertyId.'"></i>';
+                         }
+                    }
+                    ?>
+   
+                      
+                    <div class="interested-text">
+                        <?php
+                        $interestedCountQuery = $conn->query("SELECT COUNT(*) FROM interested_users_properties WHERE PROPERTY_ID = '$propertyId';");
+                        $count = mysqli_fetch_assoc($interestedCountQuery);
+                        echo '<span class="interested-user-count">' . $count['COUNT(*)'] . '</span> interested';
+                        ?>
+                    </div>
                 </div>
-
             </div>
             <div class="detail-container">
                 <div class="property-name">
@@ -151,7 +166,11 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
                     <div class="rent-unit">per month</div>
                 </div>
                 <div class="button-container col-6">
-                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#login-modal">Book Now</a>
+                    <a href="#" class="btn btn-primary" <?php if (isset($_SESSION['user_id'])) {
+                        echo '';
+                    } else {
+                        echo 'data-toggle="modal" data-target="#login-modal"';
+                    } ?>>Book Now</a>
                 </div>
             </div>
         </div>
@@ -322,6 +341,21 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
         <?php include "./common pages/footer.php" ?>
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('#like-btn').click(function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        type: 'POST',
+                        url: '../PGLife/common pages/like.php',
+                        data: $(this).serialize(),
+                        success: function(response){
+                            console.log($(this));
+                        }
+                    })
+                })
+            })
+        </script>
 </body>
 
 </html>

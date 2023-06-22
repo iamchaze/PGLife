@@ -33,14 +33,17 @@
                 <?php
                 if (isset($_SESSION['user_id'])) {
                     echo '<li class="nav-item">
+                    <b class="nav-link ">Hi, ' . $_SESSION['username'] . '</b>
+                    </li>';
+                    echo '<li class="nav-item ">
                     <a id="dashboard-btn" class="nav-link text-info" href="../../PGLife/dashboard.php"">
-                        <i class="fas fa-user"></i><b>Hi, ' . $_SESSION['username'] . '</b>
+                        <i class="fas fa-user"></i><b>Dashboard</b>
                     </a>
                 </li>';
                 } else {
                     echo '<li class="nav-item">
                     <a class="nav-link" href="#" data-toggle="modal" data-target="#signup-modal">
-                        <i class="fas fa-user"></i>Signup
+                        <i class="fas fa-user"></i><b>Signup</b>
                     </a>
                 </li>';
                 }
@@ -52,14 +55,14 @@
                     echo '
                     <li class="nav-item">
                         <a id="logout-btn" class="nav-link text-danger" href="../../PGLife/common pages/logout.php">
-                            <i class="fas fa-sign-in-alt"></i>Logout
+                            <i class="fas fa-sign-in-alt"></i><b>Logout</b>
                         </a>
                     </li>';
                 } else {
                     echo
                         '<li class="nav-item">
                     <a class="nav-link" href="#" data-toggle="modal" data-target="#login-modal">
-                        <i class="fas fa-sign-in-alt"></i>Login
+                        <i class="fas fa-sign-in-alt"></i><b>Login</b>
                     </a>
                 </li>';
                 }
@@ -87,8 +90,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="signup-form" class="form" role="form" method="POST"
-                    action="../../PGLife/common pages/signup_submit.php">
+                <form id="signup-form" class="form" role="form" method="POST">
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">
@@ -178,8 +180,7 @@
             </div>
 
             <div class="modal-body">
-                <form id="login-form" class="form" role="form" action="../../PGLife/common pages/login_submit.php"
-                    method="POST">
+                <form id="login-form" class="form" role="form" method="POST">
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">
@@ -277,7 +278,7 @@
             $.ajax({
                 type: 'POST',
                 url: '../../PGLife/common pages/logout.php',
-                data: null,
+                data: $(this).serialize(),
                 success: function (response) {
                     window.location.href = '../../PGLife/index.php';
                 }

@@ -6,6 +6,8 @@ session_start();
 
 session_destroy();
 include "../db_connect.php";
-echo 'You have been Logged Out!';
+
+$v = $_POST['logout-btn'];
+echo $v;
 
 ?>

@@ -1,0 +1,103 @@
+#background{
+    background:linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.45) 0%,
+        rgba(0, 0, 0, 0.6) 100%
+      ), url("../img/bg.png");
+      background-repeat: no-repeat;
+      background-position: bottom;
+      background-size: cover;
+      background-attachment: fixed;
+    text-align: center;
+    height: 700px;
+    position: relative;
+    width: 100%;
+}
+#header-content{
+    width: 60%;
+}
+#searchbar{
+    width: 100%;
+    position: relative;
+    align-items: center;
+}
+#searchbar input{
+    width: 100%;
+    left: 0;
+    right: 30px;
+    padding: 8px;
+}
+#searchbar button{
+    position: absolute;
+    right: 0;
+}
+#searchbar button i{
+    font-size: 1.5rem;
+}
+#background > div{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#background h1{
+    color: white;
+    font-size: 2.5em;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+#searchbar button{
+    padding: 9px 12px;
+    border: none;
+    background-color: grey;
+    color: white;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+#major-cities{
+    text-align: center;
+    margin-bottom: 100px;
+}
+#major-cities h1{
+    text-align: center;
+    margin: 100px auto;
+}
+#major-cities button{
+    margin: 20px 3%;
+    background-color: inherit;
+    border: none;
+    border-radius: 50%;
+    padding: 20px;
+    width: max-content;   
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.45);
+}
+#major-cities button img{
+    width: 10em;
+    height: 10em;
+}
+@media (max-width: 768px) {
+    #background {
+        height: 500px;
+    }
+    #background h1{
+        padding: 10px;
+    }
+    #header-content{
+        width: 80%;
+    }
+
+}
+@media (max-width: 576px) {
+    #major-cities button{
+        display: block;
+        margin: 5% auto;
+        scale: 90%;
+    }
+    #header-content{
+        width: 90%;
+
+    }
+}
+.fa-search{
+    font-size: 1em;
+}

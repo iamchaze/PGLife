@@ -197,3 +197,11 @@ input[type="radio"] {
     margin: 1vh auto;
     color: red;
 }
+.star-container i {
+    color: #EA322E;
+    font-size: 12px;
+    margin-right: 6px;
+}
+.interested-container button:active{
+    box-decoration-break: unset;
+}
