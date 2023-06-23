@@ -5,12 +5,22 @@
 $propertyId = $_GET['propertyid'];
 $propertyDetails = $conn->query("SELECT * FROM PROPERTIES WHERE ID = '$propertyId';");
 while ($row = mysqli_fetch_assoc($propertyDetails)):
+    $propertyId = $row['ID'];
+    $propertyName = $row['NAME'];
+    $propertyAddress = $row['ADDRESS'];
+    $propertyDescription = $row['DESCRIPTION'];
+    $propertyForGender = $row['GENDER'];
+    $propertyRent = $row['RENT'];
+    $propertyRatingClean = $row['RATING_CLEAN'];
+    $propertyRatingFood = $row['RATING_FOOD'];
+    $propertyRatingSafety = $row['RATING_SAFETY'];
+    $propertyRatingOverall = (floatval($row['RATING_CLEAN']) + floatval($row['RATING_FOOD']) + floatval($row['RATING_SAFETY'])) / 3;
+    $propertyImages = $row['IMAGES'];
     ?>
-
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>
-            <?php echo $row['NAME']; ?> | PG Life
+            <?php echo $propertyName; ?> | PG Life
         </title>
 
         <link href="css/bootstrap.min.css" rel="stylesheet" />
@@ -37,7 +47,7 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
                     </a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    <?php echo $row['NAME']; ?>
+                    <?php echo $propertyName; ?>
                 </li>
             </ol>
         </nav>
@@ -53,14 +63,14 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
             <?php
             $imageQuery = $conn->query("SELECT IMAGES FROM PROPERTIES WHERE ID = '$propertyId';");
             while ($row = mysqli_fetch_assoc($imageQuery)) {
-                $propertyImages = explode("-", $row['IMAGES']);
-                foreach ($propertyImages as $key => $value) {
-                    if ($key == 0) {
+                $propertyImages = explode("-", $propertyImages);
+                foreach ($propertyImages as $imageIndex => $imagePath) {
+                    if ($imageIndex == 0) {
                         echo '<div class="carousel-item active">';
                     } else {
                         echo '<div class="carousel-item">';
                     }
-                    echo '<img class="d-block w-100" src="img/properties' . $value . '" alt="slide">';
+                    echo '<img class="d-block w-100" src="img/properties' . $imagePath . '" alt="slide">';
                     echo '</div>';
                 }
             }
@@ -86,8 +96,7 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
                 while ($row = mysqli_fetch_assoc($propertyDetails)):
                     ?>
                     <?php
-                    $avgRating = (floatval($row['RATING_CLEAN']) + floatval($row['RATING_FOOD']) + floatval($row['RATING_SAFETY'])) / 3;
-                    $avgRating = sprintf("%.1f", $avgRating);
+                    $avgRating = sprintf("%.1f", $propertyRatingOverall);
                     if (strpos($avgRating, '.0') !== false) {
                         for ($i = 1; $i <= intval($avgRating); $i++) {
                             echo ' <i class="fas fa-star"></i> ';
@@ -137,10 +146,10 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
             <div class="detail-container">
                 <div class="property-name">
                     <?php
-                    echo $row['NAME']; ?>
+                    echo $propertyName; ?>
                 </div>
                 <div class="property-address">
-                    <?php echo $row['ADDRESS']; ?>
+                    <?php echo $propertyAddress; ?>
                 </div>
                 <div class="property-gender">
                     <?php
@@ -161,7 +170,7 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
             <div class="row no-gutters">
                 <div class="rent-container col-6">
                     <div class="rent">Rs.
-                        <?php echo $row['RENT']; ?> /-
+                        <?php echo $propertyRent; ?>/-
                     </div>
                     <div class="rent-unit">per month</div>
                 </div>
@@ -209,7 +218,7 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
                 <?php
                 $about = $conn->query("SELECT * FROM PROPERTIES WHERE ID = '$propertyId';");
                 while ($row = mysqli_fetch_assoc($about)) {
-                    echo $row['description'];
+                    echo $propertyDescription;
                 }
                 ?>
             </p>
@@ -220,7 +229,6 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
             if (strpos($rating, '.0') !== false) {
                 for ($i = 1; $i <= intval($rating); $i++) {
                     echo ' <i class="fas fa-star"></i> ';
-
                 }
                 for ($j = 1; $j <= 5 - intval($rating); $j++) {
                     echo ' <i class="far fa-star"></i> ';
@@ -228,7 +236,6 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
             } else {
                 for ($i = 1; $i <= intval($rating); $i++) {
                     echo ' <i class="fas fa-star"></i> ';
-
                 }
                 echo ' <i class="fas fa-star-half-alt"></i> ';
                 for ($j = 2; $j <= 5 - intval($rating); $j++) {
@@ -251,7 +258,7 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
                                 <?php
                                 $ratingQuery = $conn->query("SELECT * FROM PROPERTIES WHERE ID = '$propertyId';");
                                 while ($row = mysqli_fetch_assoc($ratingQuery)) {
-                                    $rating = $row['RATING_CLEAN'];
+                                    $rating = $propertyRatingClean;
                                     printStars($rating);
                                 }
                                 ?>

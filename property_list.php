@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php include "db_connect.php" ?>
-<?php include "./common pages/filter.php" ?>
-<?php $selectedCity = $_GET['city'];
+<?php
+include "db_connect.php";
+$selectedCity = $_GET['city'];
+$filterGender = $_GET['gender'] ?? null;
+$sortType = $_GET['sort'] ?? null;
 ?>
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Best PG's in
@@ -24,12 +25,10 @@
     <?php include "./common pages/header.php" ?>
     <div id="loading">
     </div>
-
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb py-2">
             <li class="breadcrumb-item">
-                <a href="index.php
-">Home</a>
+                <a href="index.php">Home</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
                 <?php echo $selectedCity; ?>
@@ -38,48 +37,44 @@
     </nav>
 
     <div class="page-container">
-        <div class="filter-bar row justify-content-around">
-            <div class="col-auto" data-toggle="modal" data-target="#filter-modal">
-                <img src="img/filter.png" alt="filter" />
-                <span>Filter</span>
-            </div>
-            <div class="col-auto">
-                <img src="img/desc.png" alt="sort-desc" />
-                <span>Highest rent first</span>
-            </div>
-            <div class="col-auto">
-                <img src="img/asc.png" alt="sort-asc" />
-                <span>Lowest rent first</span>
-            </div>
-        </div>
-
+        <?php include "./common pages/filter.php"; ?>
         <?php
         $cityQuery = $conn->query("SELECT * FROM CITIES WHERE NAME = '$selectedCity';");
-        if ($cityQuery) {
-            while ($row = mysqli_fetch_assoc($cityQuery)) {
-                $cityId = $row['ID'];
-            }
-        }
-        $propertyListQuery = $conn->query("SELECT * FROM PROPERTIES WHERE CITY_ID = '$cityId';");
+        $cityId = mysqli_fetch_assoc($cityQuery)['ID'] ?? null;
+        
+        $sortClause = isset($_GET['sort']) ? " ORDER BY RENT $sortType" : "";
+        $genderClause = isset($_GET['gender']) ? " AND GENDER = '$filterGender'" : "";
+        $propertyListQuery = $conn->query("SELECT * FROM PROPERTIES WHERE CITY_ID = '$cityId' $genderClause $sortClause;");
+        
+        if (mysqli_num_rows($propertyListQuery) == 0) { echo 'No Search Results'; }
+            
         while ($row = mysqli_fetch_assoc($propertyListQuery)):
             $propertyId = $row['ID'];
+            $propertyName = $row['NAME'];
+            $propertyAddress = $row['ADDRESS'];
+            $propertyDescription = $row['DESCRIPTION'];
+            $propertyForGender = $row['GENDER'];
+            $propertyRent = $row['RENT'];
+            $propertyRatingClean = $row['RATING_CLEAN'];
+            $propertyRatingFood = $row['RATING_FOOD'];
+            $propertyRatingSafety = $row['RATING_SAFETY'];
+            $propertyRatingOverall = (floatval($row['RATING_CLEAN']) + floatval($row['RATING_FOOD']) + floatval($row['RATING_SAFETY'])) / 3;
+            $propertyImages = $row['IMAGES'];
             ?>
-
             <div class="property-card row">
                 <div class="image-container col-md-4">
                     <img src="./img/properties<?php
                     $imageQuery = $conn->query("SELECT IMAGES FROM PROPERTIES WHERE ID = '$propertyId';");
                     ($r = mysqli_fetch_assoc($imageQuery));
-                    $propertyImage = explode("-", $r['IMAGES']);
-                    echo $propertyImage[0] ?>">
+                    $propertyImage = explode("-", $propertyImages);
+                    echo $propertyImage[0]; ?>">
                 </div>
 
                 <div class="content-container col-md-8">
                     <div class="row no-gutters justify-content-between">
                         <div class="star-container" title="4.5">
                             <?php
-                            $avgRating = (floatval($row['RATING_CLEAN']) + floatval($row['RATING_FOOD']) + floatval($row['RATING_SAFETY'])) / 3;
-                            $avgRating = sprintf("%.1f", $avgRating);
+                            $avgRating = sprintf("%.1f", $propertyRatingOverall);
                             if (strpos($avgRating, '.0') !== false) {
                                 for ($i = 1; $i <= intval($avgRating); $i++) {
                                     echo ' <i class="fas fa-star"></i> ';
@@ -90,7 +85,6 @@
                             } else {
                                 for ($i = 1; $i <= intval($avgRating); $i++) {
                                     echo ' <i class="fas fa-star"></i> ';
-
                                 }
                                 echo ' <i class="fas fa-star-half-alt"></i> ';
                                 for ($j = 2; $j <= 5 - intval($avgRating); $j++) {
@@ -126,17 +120,17 @@
                     </div>
                     <div class="detail-container">
                         <div class="property-name">
-                            <?php echo $row['NAME']; ?>
+                            <?php echo $propertyName; ?>
                         </div>
                         <div class="property-address">
-                            <?php echo $row['ADDRESS']; ?>
+                            <?php echo $propertyAddress; ?>
                         </div>
                         <div class="property-gender">
                             <?php
-                            if ($row['GENDER'] == 'female') {
-                                echo ' <img src="./img/male.png" />';
-                            } elseif ($row['GENDER'] == 'male') {
+                            if ($propertyForGender == 'female') {
                                 echo ' <img src="./img/female.png" />';
+                            } elseif ($propertyForGender == 'male') {
+                                echo ' <img src="./img/male.png" />';
                             } else {
                                 echo '<img src="./img/male.png" />|<img src="./img/female.png" />';
                             }
@@ -146,13 +140,13 @@
                     <div class="row no-gutters">
                         <div class="rent-container col-6">
                             <div class="rent">Rs.
-                                <?php echo $row['RENT']; ?>/-
+                                <?php echo $propertyRent; ?>/-
                             </div>
                             <div class="rent-unit">per month</div>
                         </div>
                         <div class="button-container col-6">
-                            <a href="property_detail.php?city=<?php echo $selectedCity ?>&propertyid=<?php echo $row['ID']; ?>
-        " class="btn btn-primary">View</a>
+                            <a href="property_detail.php?city=<?php echo $selectedCity ?>&propertyid=<?php echo $row['ID']; ?>"
+                                class="btn btn-primary">View</a>
                         </div>
                     </div>
                 </div>
@@ -178,8 +172,8 @@
                     url: '../PGLife/common pages/heart.php',
                     data: likedata,
                     success: function (response) {
-                        var is_interested_image = $('.is-interested-image[propertyid="'+propertyid+'"]');
-                        var interested_user_count = $('.interested-user-count[propertyid="'+propertyid+'"]');
+                        var is_interested_image = $('.is-interested-image[propertyid="' + propertyid + '"]');
+                        var interested_user_count = $('.interested-user-count[propertyid="' + propertyid + '"]');
                         if (response == 'Liked') {
                             is_interested_image.addClass("fas").removeClass("far");
                             interested_user_count.html(parseFloat(interested_user_count.html()) + 1);
@@ -190,8 +184,8 @@
                     }
                 })
             })
-            
-        })
+
+    })
     </script>
 </body>
 
