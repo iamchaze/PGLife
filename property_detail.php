@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php include "db_connect.php"; ?>
-<?php $selectedCity = $_GET['city'];
+<?php
 $propertyId = $_GET['propertyid'];
+// if (isset($_GET['city'])) {
+//     $selectedCity = isset($_GET['city']);
+// } else {
+    $cityQuery = $conn->query("SELECT NAME FROM CITIES WHERE ID = (SELECT CITY_ID FROM properties WHERE ID = $propertyId)");
+    $rowCity = mysqli_fetch_assoc($cityQuery);
+    $selectedCity = $rowCity['NAME'];
+// }
+
 $propertyDetails = $conn->query("SELECT * FROM PROPERTIES WHERE ID = '$propertyId';");
 while ($row = mysqli_fetch_assoc($propertyDetails)):
     $propertyId = $row['ID'];
@@ -22,7 +30,6 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
         <title>
             <?php echo $propertyName; ?> | PG Life
         </title>
-
         <link href="css/bootstrap.min.css" rel="stylesheet" />
         <link href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" rel="stylesheet" />
         <link
@@ -90,7 +97,7 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
     <div class="property-summary page-container">
         <div class="row no-gutters justify-content-between">
             <div class="star-container" title="4.8">
-                <?php $selectedCity = $_GET['city'];
+                <?php
                 $propertyId = $_GET['propertyid'];
                 $propertyDetails = $conn->query("SELECT * FROM PROPERTIES WHERE ID = '$propertyId';");
                 while ($row = mysqli_fetch_assoc($propertyDetails)):

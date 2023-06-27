@@ -19,6 +19,9 @@
 
 <!-- -------------------------------------------------------------Header Content(Not Logged In)------------------------------------------ -->
 <?php session_start(); ?>
+<?php
+
+?>
 <div class="header sticky-top">
     <nav class="navbar navbar-expand-md navbar-light">
         <a class="navbar-brand" href="./index.php">
@@ -36,7 +39,7 @@
                     <b class="nav-link ">Hi, ' . $_SESSION['username'] . '</b>
                     </li>';
                     echo '<li class="nav-item ">
-                    <a id="dashboard-btn" class="nav-link text-info" href="../../PGLife/dashboard.php"">
+                    <a id="dashboard-btn" class="nav-link text-info" href="../../PGLife/dashboard.php?">
                         <i class="fas fa-user"></i><b>Dashboard</b>
                     </a>
                 </li>';
