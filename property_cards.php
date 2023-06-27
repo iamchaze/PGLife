@@ -13,7 +13,8 @@ if ($_SERVER['PHP_SELF'] == "/PGLife/dashboard.php") {
     $propertyListQuery = $conn->query("SELECT * FROM PROPERTIES WHERE CITY_ID = '$cityId' $genderClause $sortClause;");
 }
 if (mysqli_num_rows($propertyListQuery) == 0) {
-    echo 'No Search Results';
+    
+    echo '<div id="no-result">No Search Results</div>';
 }
 while ($row = mysqli_fetch_assoc($propertyListQuery)):
     $propertyId = $row['ID'];
@@ -99,7 +100,7 @@ while ($row = mysqli_fetch_assoc($propertyListQuery)):
                     } elseif ($propertyForGender == 'male') {
                         echo ' <img src="./img/male.png" />';
                     } else {
-                        echo '<img src="./img/male.png" />|<img src="./img/female.png" />';
+                        echo '<img src="./img/unisex.png" />';
                     }
                     ?>
                 </div>

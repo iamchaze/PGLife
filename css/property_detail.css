@@ -23,10 +23,11 @@
     padding-right: 42px;
 }
 
+
 @media (max-width: 768px) {
     .interested-container {
         padding-right: 0px;
-    }
+    }   
 }
 
 .interested-container i {
@@ -198,4 +199,12 @@
     text-align: right;
     font-weight: bold;
     margin-top: 12px;
+}
+.carousel-item img{
+    transition: all .1s;
+}
+.carousel-item img:hover{
+    height: 500px;
+    z-index: 999;
+    cursor: pointer;
 }

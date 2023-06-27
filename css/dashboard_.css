@@ -11,12 +11,16 @@ p{
   margin-right: 20px;
 }
 #user-container{
+    border-radius: 10px;
+    padding: 5%;
+    border: none;
     width: 70%;
     margin: auto;
     margin-top: 100px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
 }
 #user-container h1{
-    margin-bottom: 100px;
+
 }
 #user-img{
     width: 200px;
@@ -38,8 +42,37 @@ p{
     justify-content: center;
     align-items: center;
     margin-top: 50px;
+    font-size: 1.5em;
+    font-weight: bold;
 }
 #interested-properties h1{
     margin-top: 100px;
     text-align: center;
+}
+#about-img{
+    width: 70%;
+    display: block;
+    margin: auto;
+}
+#about-img img{
+    width: 100%;
+}
+@media (max-width:992px){
+    #user-info{
+        display: block;
+        text-align: center;
+        margin: 1rem auto;
+        font-size: 1.2em;
+    }
+    #user-img{
+        scale: 80%;
+    }
+}
+@media (max-width:768px){
+    #user-info{
+        font-size: .9em;
+    }
+    #user-img{
+        scale: 70%;
+    }
 }

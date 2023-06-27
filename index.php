@@ -13,15 +13,15 @@
         rel="stylesheet" />
     <link href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" rel="stylesheet" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <link href="./css/common_.css" type="text/css" rel="stylesheet" />
-    <link href="./css/index.css" type="text/css" rel="stylesheet" />
+    <link href="./css/common.css" type="text/css" rel="stylesheet" />
+    <link href="./css/home.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
     <?php include "./common pages/header.php" ?>
     <div id="background">
         <div id="header-content">
-            <h1>Happiness per Square Foot</h1>
+            <h1>PG Dekh Rahe ho?, <br>Aajao Dikha Dunga!</h1>
             <div id="searchbar">
                 <form action="./property_list.php" method="GET">
                     <input id="search" name="search-query" type="text" placeholder="Enter your city to search for PGs">
@@ -48,6 +48,13 @@
     <?php include "./common pages/footer.php" ?>
     <script type="text/javascript" src="./js/jquery.js"></script>
     <script type="text/javascript" src="./js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.major-cities button').click(function () {
+                $('#loading').css({ 'display': 'block' })
+            })
+        })
+    </script>
 </body>
 
 </html>

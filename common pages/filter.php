@@ -5,11 +5,11 @@
     </div>
     <div class="col-auto">
         <img src="img/desc.png" alt="sort-desc" onclick="sortHighest()" />
-        <span>Highest rent first</span>
+        <span>Highest Rent</span>   
     </div>
     <div class="col-auto">
         <img src="img/asc.png" alt="sort-asc" onclick="sortLowest()"/>
-        <span>Lowest rent first</span>
+        <span>Lowest Rent</span>
     </div>
 </div>
 <div class="modal fade" id="filter-modal" tabindex="-1" role="dialog" aria-labelledby="filter-heading"
@@ -43,7 +43,7 @@
         </div>
     </div>
 </div>
-
+<div id="loading"></div>
 <script>
     regex = /unisex|male|female/g
     removeRegex = /&gender=unisex|&gender=male|&gender=female/
@@ -58,6 +58,7 @@
                 window.location.href = window.location.href.replace(regex, gender)
             }
         }
+
     }
    
     function sortHighest(){

@@ -25,8 +25,8 @@ if (isset($_GET['search-query'])) {
     <link
         href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap"
         rel="stylesheet" />
-    <link href="css/common_.css" rel="stylesheet" />
-    <link href="css/property_list1.css" rel="stylesheet" />
+    <link href="css/common.css" rel="stylesheet" />
+    <link href="css/property_list.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -40,9 +40,9 @@ if (isset($_GET['search-query'])) {
             </li>
             <li class="breadcrumb-item active" aria-current="page">
                 <?php if (isset($_GET['city'])) {
-                    echo $selectedCity; 
+                    echo $selectedCity;
                 } else {
-                    echo 'Search Results for "'.$searchQuery.'"';
+                    echo 'Search Results for "' . $searchQuery . '"';
                 } ?>
             </li>
         </ol>
@@ -51,14 +51,15 @@ if (isset($_GET['search-query'])) {
     <div class="page-container">
         <?php include "./common pages/filter.php"; ?>
         <?php
-        if (isset($_GET['city'])){
+        if (isset($_GET['city'])) {
             $cityQuery = $conn->query("SELECT * FROM CITIES WHERE NAME = '$selectedCity';");
             $cityId = mysqli_fetch_assoc($cityQuery)['ID'] ?? null;
         }
         ?>
         <?php include "./property_cards.php"; ?>
     </div>
-
+    <div id="loading">
+    </div>
     <?php include "./common pages/footer.php" ?>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
