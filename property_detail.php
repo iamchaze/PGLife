@@ -36,7 +36,7 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
             href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap"
             rel="stylesheet" />
         <link href="css/common.css" rel="stylesheet" />
-        <link href="css/property_details.css" rel="stylesheet" />
+        <link href="css/property_detail.css" rel="stylesheet" />
     </head>
 
     <body>
@@ -219,7 +219,7 @@ while ($row = mysqli_fetch_assoc($propertyDetails)):
                 ?>
             </div>
         </div>
-        <div class="property-about">
+        <div class="property-about page-container">
             <h1>About the Property</h1>
             <p>
                 <?php
